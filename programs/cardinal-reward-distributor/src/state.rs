@@ -9,6 +9,7 @@ pub fn assert_reward_manager(pubkey: &Pubkey) -> bool {
 
 pub const REWARD_ENTRY_SEED: &str = "reward-entry";
 pub const ARMANI_PROGRAM: &str = "";
+pub const ARMANI_AUTHORITY: Pubkey = Pubkey::new_from_array([0; 32]);
 pub const SIGNER_PREFIX: &[u8] = b"reward_signer";
 pub const REWARD_ENTRY_SIZE: usize = 8 + std::mem::size_of::<RewardEntry>() + 64;
 #[account]

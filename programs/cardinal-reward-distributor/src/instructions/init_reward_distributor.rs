@@ -9,6 +9,8 @@ use anchor_spl::token::{self};
 use cardinal_stake_pool::state::StakePool;
 use spl_token::instruction::AuthorityType;
 
+
+
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct InitRewardDistributorIx {
     pub reward_amount: u64,
@@ -36,7 +38,7 @@ pub struct InitRewardDistributorCtx<'info> {
     #[account(mut)]
     reward_mint: Box<Account<'info, Mint>>,
 
-    #[account(mut)]
+    #[account(mut, constraint = authority.key() == ARMANI_AUTHORITY @ ErrorCode::InvalidAuthority)]
     authority: Signer<'info>,
     #[account(mut)]
     payer: Signer<'info>,
