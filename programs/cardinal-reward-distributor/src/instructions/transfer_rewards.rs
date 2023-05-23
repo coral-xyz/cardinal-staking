@@ -58,10 +58,6 @@ pub struct TransferRewardsCtx<'info> {
     )]
     user_reward_mint_token_account_b: Box<Account<'info, TokenAccount>>,
 
-    /// CHECK: This is not dangerous because we don't read or write from this account
-    #[account(mut, constraint = assert_reward_manager(&reward_manager.key()))]
-    reward_manager: UncheckedAccount<'info>,
-
     authority_a: Signer<'info>,
     authority_b: UncheckedAccount<'info>,
     #[account(mut)]

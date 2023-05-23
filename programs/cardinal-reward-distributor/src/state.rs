@@ -1,11 +1,11 @@
 use anchor_lang::prelude::*;
 use std::str::FromStr;
 
-pub const CLAIM_REWARD_LAMPORTS: u64 = 2_000_000;
-
-pub fn assert_reward_manager(pubkey: &Pubkey) -> bool {
-    pubkey.to_string() == Pubkey::from_str("crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr").unwrap().to_string()
-}
+// pub const CLAIM_REWARD_LAMPORTS: u64 = 2_000_000;
+//
+// pub fn assert_reward_manager(pubkey: &Pubkey) -> bool {
+//     pubkey.to_string() == Pubkey::from_str("crkdpVWjHWdggGgBuSyAqSmZUmAjYLzD435tcLDRLXr").unwrap().to_string()
+// }
 
 pub const REWARD_ENTRY_SEED: &str = "reward-entry";
 pub const ARMANI_PROGRAM: &str = "";

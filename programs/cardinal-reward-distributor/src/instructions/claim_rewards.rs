@@ -41,9 +41,6 @@ pub struct ClaimRewardsCtx<'info> {
     )]
     user_reward_mint_token_account: Box<Account<'info, TokenAccount>>,
 
-    /// CHECK: This is not dangerous because we don't read or write from this account
-    #[account(mut, constraint = assert_reward_manager(&reward_manager.key()))]
-    reward_manager: UncheckedAccount<'info>,
 
     authority: Signer<'info>,
     #[account(mut)]
@@ -170,14 +167,14 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
         reward_distributor.rewards_issued = reward_distributor.rewards_issued.checked_add(reward_amount_to_receive).unwrap();
         reward_entry.reward_seconds_received = reward_entry.reward_seconds_received.checked_add(reward_time_to_receive).unwrap();
 
-        invoke(
-            &transfer(&ctx.accounts.user.to_account_info().key(), &ctx.accounts.reward_manager.key(), CLAIM_REWARD_LAMPORTS),
-            &[
-                ctx.accounts.user.to_account_info(),
-                ctx.accounts.reward_manager.to_account_info(),
-                ctx.accounts.system_program.to_account_info(),
-            ],
-        )?;
+        // invoke(
+        //     &transfer(&ctx.accounts.user.to_account_info().key(), &ctx.accounts.reward_manager.key(), CLAIM_REWARD_LAMPORTS),
+        //     &[
+        //         ctx.accounts.user.to_account_info(),
+        //         ctx.accounts.reward_manager.to_account_info(),
+        //         ctx.accounts.system_program.to_account_info(),
+        //     ],
+        // )?;
     }
 
     Ok(())
