@@ -484,20 +484,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cardinal-group-reward-distributor"
-version = "2.2.1"
-dependencies = [
- "anchor-lang",
- "anchor-spl",
- "cardinal-reward-distributor",
- "cardinal-stake-pool",
- "mpl-token-metadata",
- "proptest",
- "solana-program",
- "spl-token",
-]
-
-[[package]]
 name = "cardinal-payment-manager"
 version = "3.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -508,19 +494,6 @@ dependencies = [
  "mpl-token-metadata",
  "solana-program",
  "spl-associated-token-account",
- "spl-token",
-]
-
-[[package]]
-name = "cardinal-receipt-manager"
-version = "2.2.1"
-dependencies = [
- "anchor-lang",
- "anchor-spl",
- "cardinal-payment-manager",
- "cardinal-stake-pool",
- "proptest",
- "solana-program",
  "spl-token",
 ]
 

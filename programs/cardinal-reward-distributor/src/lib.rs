@@ -42,4 +42,8 @@ pub mod cardinal_reward_distributor {
     pub fn reclaim_funds(ctx: Context<ReclaimFundsCtx>, amount: u64) -> Result<()> {
         reclaim_funds::handler(ctx, amount)
     }
+
+    pub fn transfer_rewards(ctx: Context<TransferRewardsCtx>, amount: u64) -> Result<()> {
+        transfer_rewards::handler(ctx, amount)
+    }
 }
