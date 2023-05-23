@@ -5,7 +5,7 @@ pub mod state;
 use anchor_lang::prelude::*;
 use instructions::*;
 
-declare_id!("rwdNPNPS6zNvtF6FMvaxPRjzu2eC51mXaDT9rmWsojp");
+declare_id!("9zNbk2SZKniByFWH8tg3LKqkXy7myRU611SbJJgPt4gd");
 
 #[program]
 pub mod cardinal_reward_distributor {
@@ -23,23 +23,23 @@ pub mod cardinal_reward_distributor {
         claim_rewards::handler(ctx)
     }
 
-    pub fn update_reward_entry(ctx: Context<UpdateRewardEntryCtx>, ix: UpdateRewardEntryIx) -> Result<()> {
-        update_reward_entry::handler(ctx, ix)
-    }
+    // pub fn update_reward_entry(ctx: Context<UpdateRewardEntryCtx>, ix: UpdateRewardEntryIx) -> Result<()> {
+    //     update_reward_entry::handler(ctx, ix)
+    // }
 
-    pub fn close_reward_distributor<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, CloseCtx<'info>>) -> Result<()> {
-        close_reward_distributor::handler(ctx)
-    }
+    // pub fn close_reward_distributor<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, CloseCtx<'info>>) -> Result<()> {
+    //     close_reward_distributor::handler(ctx)
+    // }
 
-    pub fn close_reward_entry(ctx: Context<CloseRewardEntryCtx>) -> Result<()> {
-        close_reward_entry::handler(ctx)
-    }
+    // pub fn close_reward_entry(ctx: Context<CloseRewardEntryCtx>) -> Result<()> {
+    //     close_reward_entry::handler(ctx)
+    // }
 
-    pub fn update_reward_distributor(ctx: Context<UpdateRewardDistributorCtx>, ix: UpdateRewardDistributorIx) -> Result<()> {
-        update_reward_distributor::handler(ctx, ix)
-    }
+    // pub fn update_reward_distributor(ctx: Context<UpdateRewardDistributorCtx>, ix: UpdateRewardDistributorIx) -> Result<()> {
+    //     update_reward_distributor::handler(ctx, ix)
+    // }
 
-    pub fn reclaim_funds(ctx: Context<ReclaimFundsCtx>, amount: u64) -> Result<()> {
-        reclaim_funds::handler(ctx, amount)
-    }
+    // pub fn reclaim_funds(ctx: Context<ReclaimFundsCtx>, amount: u64) -> Result<()> {
+    //     reclaim_funds::handler(ctx, amount)
+    // }
 }

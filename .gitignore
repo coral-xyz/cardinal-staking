@@ -1,5 +1,6 @@
 # Ignore Mac OS noise
 .DS_Store
+.idea
 
 # VSCode history
 .history

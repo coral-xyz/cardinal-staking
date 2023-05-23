@@ -27,6 +27,7 @@ spl-token = { version = "3.2.0", features = ["no-entrypoint"] }
 mpl-token-metadata = { version = "1.8.4", features = ["no-entrypoint"] }
 cardinal-token-manager = { version = "^4.0.0", features = ["cpi"] }
 cardinal-payment-manager = { version = "^3.0.0", features = ["cpi"] }
+cardinal-reward-distributor = { version = "2.2.1", features= ["cpi"] }
 arrayref = "0.3.6"
 
 [dev-dependencies]

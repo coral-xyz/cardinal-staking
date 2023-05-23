@@ -36,4 +36,12 @@ pub enum ErrorCode {
     InvalidPayer,
     #[msg("Max reward seconds claimed")]
     MaxRewardSecondsClaimed,
+    #[msg("Invalid reward token account owner")]
+    InvalidRewardTokenOwner,
+    #[msg("Invalid self transfer")]
+    InvalidSelfTransfer,
+    #[msg("Not enough reward tokens")]
+    NotEnoughRewardTokens,
+    #[msg("Invalid instruction")]
+    InvalidInstruction,
 }

@@ -3,6 +3,7 @@ use crate::state::*;
 use anchor_lang::prelude::*;
 use anchor_lang::solana_program::program::invoke;
 use anchor_lang::solana_program::system_instruction::transfer;
+use anchor_spl::associated_token::AssociatedToken;
 use anchor_spl::token::Mint;
 use anchor_spl::token::Token;
 use anchor_spl::token::TokenAccount;
@@ -11,6 +12,7 @@ use cardinal_stake_pool::state::StakeEntry;
 use cardinal_stake_pool::state::StakeEntryKind;
 use cardinal_stake_pool::state::StakePool;
 use std::cmp::min;
+use std::str::FromStr;
 
 #[derive(Accounts)]
 pub struct ClaimRewardsCtx<'info> {
@@ -19,25 +21,34 @@ pub struct ClaimRewardsCtx<'info> {
     #[account(mut, constraint = reward_distributor.stake_pool == stake_pool.key())]
     reward_distributor: Box<Account<'info, RewardDistributor>>,
 
-    #[account(constraint = stake_entry.key() == reward_entry.stake_entry @ ErrorCode::InvalidStakeEntry)]
+    #[account(constraint =
+        stake_entry.key() == reward_entry.stake_entry
+        && stake_entry.last_staker != Pubkey::default()
+        && stake_entry.original_mint == original_mint.key()
+        @ ErrorCode::InvalidStakeEntry)]
     stake_entry: Box<Account<'info, StakeEntry>>,
     #[account(constraint = stake_pool.key() == stake_entry.pool)]
     stake_pool: Box<Account<'info, StakePool>>,
 
+    original_mint: Box<Account<'info, Mint>>,
     #[account(mut, constraint = reward_mint.key() == reward_distributor.reward_mint @ ErrorCode::InvalidRewardMint)]
     reward_mint: Box<Account<'info, Mint>>,
 
-    #[account(mut, constraint = user_reward_mint_token_account.mint == reward_distributor.reward_mint @ ErrorCode::InvalidUserRewardMintTokenAccount)]
+    #[account(init_if_needed,
+        payer = user,
+        associated_token::mint = reward_mint,
+        associated_token::authority = authority,
+    )]
     user_reward_mint_token_account: Box<Account<'info, TokenAccount>>,
 
-    /// CHECK: This is not dangerous because we don't read or write from this account
-    #[account(mut, constraint = assert_reward_manager(&reward_manager.key()))]
-    reward_manager: UncheckedAccount<'info>,
-
+    // Note: the PDA seeds are checked in the handler function body.
+    authority: Signer<'info>,
     #[account(mut)]
     user: Signer<'info>,
+    associated_token_program: Program<'info, AssociatedToken>,
     token_program: Program<'info, Token>,
     system_program: Program<'info, System>,
+    rent: Sysvar<'info, Rent>,
 }
 
 pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, ClaimRewardsCtx<'info>>) -> Result<()> {
@@ -48,17 +59,25 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
     let reward_distributor_seed = &[REWARD_DISTRIBUTOR_SEED.as_bytes(), stake_pool.as_ref(), &[reward_distributor.bump]];
     let reward_distributor_signer = &[&reward_distributor_seed[..]];
 
+    let authority = &ctx.accounts.authority;
+    let original_mint = &ctx.accounts.original_mint;
+    let expected_authority = Pubkey::find_program_address(&[NS_SBA_SCOPED_USER_PROGRAM, stake_entry.last_staker.as_ref(), crate::ID.as_ref()], &SBA_PROGRAM).0;
+
+    if authority.key() != expected_authority {
+        return Err(error!(ErrorCode::InvalidRewardTokenOwner));
+    }
+
     let reward_amount = reward_distributor.reward_amount;
     let reward_duration_seconds = reward_distributor.reward_duration_seconds;
 
-    if stake_entry.kind == StakeEntryKind::Permissioned as u8
-        // if someone else updated this users stake_entry then it must be checked that they are still the staker - this should be called BEFORE unstake
-        && ctx.accounts.user_reward_mint_token_account.owner != stake_entry.last_staker
-        // can only be signed by the last_staker or the reward distributor authority
-        && (ctx.accounts.user.key() != stake_entry.last_staker || ctx.accounts.user.key() != reward_distributor.authority)
-    {
-        return Err(error!(ErrorCode::InvalidUserRewardMintTokenAccount));
-    }
+    // if stake_entry.kind == StakeEntryKind::Permissioned as u8
+    //     // if someone else updated this users stake_entry then it must be checked that they are still the staker - this should be called BEFORE unstake
+    //     && ctx.accounts.user_reward_mint_token_account.owner != stake_entry.last_staker
+    //     // can only be signed by the last_staker or the reward distributor authority
+    //     && (ctx.accounts.user.key() != stake_entry.last_staker || ctx.accounts.user.key() != reward_distributor.authority)
+    // {
+    //     return Err(error!(ErrorCode::InvalidUserRewardMintTokenAccount));
+    // }
 
     let reward_seconds_received = reward_entry.reward_seconds_received;
     if reward_seconds_received <= stake_entry.total_stake_seconds && (reward_distributor.max_supply.is_none() || reward_distributor.rewards_issued < reward_distributor.max_supply.unwrap() as u128) {
@@ -141,14 +160,14 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
         reward_distributor.rewards_issued = reward_distributor.rewards_issued.checked_add(reward_amount_to_receive).unwrap();
         reward_entry.reward_seconds_received = reward_entry.reward_seconds_received.checked_add(reward_time_to_receive).unwrap();
 
-        invoke(
-            &transfer(&ctx.accounts.user.to_account_info().key(), &ctx.accounts.reward_manager.key(), CLAIM_REWARD_LAMPORTS),
-            &[
-                ctx.accounts.user.to_account_info(),
-                ctx.accounts.reward_manager.to_account_info(),
-                ctx.accounts.system_program.to_account_info(),
-            ],
-        )?;
+        // invoke(
+        //     &transfer(&ctx.accounts.user.to_account_info().key(), &ctx.accounts.reward_manager.key(), CLAIM_REWARD_LAMPORTS),
+        //     &[
+        //         ctx.accounts.user.to_account_info(),
+        //         ctx.accounts.reward_manager.to_account_info(),
+        //         ctx.accounts.system_program.to_account_info(),
+        //     ],
+        // )?;
     }
 
     Ok(())

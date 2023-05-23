@@ -31,12 +31,15 @@ pub struct InitRewardDistributorCtx<'info> {
         bump,
     )]
     reward_distributor: Box<Account<'info, RewardDistributor>>,
-    #[account(constraint = authority.key() == stake_pool.authority @ ErrorCode::InvalidAuthority)]
+    // This check isn't needed because there's the authority check below
+    // where only the admin key can call it.
+    //
+    // #[account(constraint = authority.key() == stake_pool.authority @ ErrorCode::InvalidAuthority)]
     stake_pool: Box<Account<'info, StakePool>>,
     #[account(mut)]
     reward_mint: Box<Account<'info, Mint>>,
 
-    #[account(mut)]
+    #[account(mut, constraint = authority.key() == INIT_REWARD_DISTRIBUTOR_AUTHORITY @ ErrorCode::InvalidAuthority)]
     authority: Signer<'info>,
     #[account(mut)]
     payer: Signer<'info>,
@@ -48,7 +51,10 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
     let reward_distributor = &mut ctx.accounts.reward_distributor;
     reward_distributor.bump = *ctx.bumps.get("reward_distributor").unwrap();
     reward_distributor.kind = ix.kind;
-    reward_distributor.authority = ctx.accounts.authority.key();
+    // This authority isn't used right now.
+    // If it's to be used in the future, we need to do a program upgrade
+    // to bootstrap it.
+    reward_distributor.authority = Pubkey::default();
     reward_distributor.stake_pool = ctx.accounts.stake_pool.key();
     reward_distributor.reward_mint = ctx.accounts.reward_mint.key();
     reward_distributor.reward_amount = ix.reward_amount;
