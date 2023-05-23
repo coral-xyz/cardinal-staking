@@ -1,4 +1,5 @@
 use crate::state::*;
+use crate::errors::ErrorCode;
 use anchor_lang::prelude::*;
 
 #[derive(Accounts)]
@@ -8,6 +9,8 @@ pub struct StakePoolFillZeros<'info> {
 }
 
 pub fn handler(ctx: Context<StakePoolFillZeros>) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let stake_pool = &mut ctx.accounts.stake_pool;
     let stake_pool_account = stake_pool.to_account_info();
     let mut stake_pool_data = stake_pool_account.data.borrow_mut();

@@ -1,5 +1,5 @@
 use crate::utils::resize_account;
-
+use crate::errors::ErrorCode;
 use crate::state::*;
 use anchor_lang::prelude::*;
 
@@ -13,6 +13,8 @@ pub struct StakeEntryResize<'info> {
 }
 
 pub fn handler(ctx: Context<StakeEntryResize>) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let stake_entry = &mut ctx.accounts.stake_entry;
     resize_account(
         &stake_entry.to_account_info(),

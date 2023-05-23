@@ -62,6 +62,9 @@ pub struct InitStakeMintCtx<'info> {
 }
 
 pub fn handler(ctx: Context<InitStakeMintCtx>, ix: InitStakeMintIx) -> Result<()> {
+
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let stake_entry = &mut ctx.accounts.stake_entry;
     let stake_pool_identifier = ctx.accounts.stake_pool.identifier.to_le_bytes();
     let stake_pool_seeds = &[STAKE_POOL_PREFIX.as_bytes(), stake_pool_identifier.as_ref(), &[ctx.accounts.stake_pool.bump]];

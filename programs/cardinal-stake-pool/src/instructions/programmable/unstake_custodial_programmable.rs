@@ -65,6 +65,8 @@ pub struct UnstakeCustodialProgrammableCtx<'info> {
 }
 
 pub fn handler(ctx: Context<UnstakeCustodialProgrammableCtx>) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let stake_pool = &mut ctx.accounts.stake_pool;
     let stake_entry = &mut ctx.accounts.stake_entry;
 

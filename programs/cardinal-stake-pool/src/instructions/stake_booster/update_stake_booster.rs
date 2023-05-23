@@ -22,6 +22,8 @@ pub struct UpdateStakeBoosterCtx<'info> {
 }
 
 pub fn handler(ctx: Context<UpdateStakeBoosterCtx>, ix: UpdateStakeBoosterIx) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let stake_booster = &mut ctx.accounts.stake_booster;
     assert_stake_boost_payment_manager(&ix.payment_manager)?;
     stake_booster.payment_amount = ix.payment_amount;

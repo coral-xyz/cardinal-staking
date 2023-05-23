@@ -16,6 +16,8 @@ pub struct ResetStakeEntryBumpCtx<'info> {
 }
 
 pub fn handler(ctx: Context<ResetStakeEntryBumpCtx>) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let (pubkey, bump) = Pubkey::find_program_address(
         &[
             STAKE_ENTRY_PREFIX.as_bytes(),

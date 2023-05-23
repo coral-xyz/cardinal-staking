@@ -49,6 +49,8 @@ pub struct BoostStakeEntryCtx<'info> {
 }
 
 pub fn handler(ctx: Context<BoostStakeEntryCtx>, ix: BoostStakeEntryIx) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let stake_entry = &mut ctx.accounts.stake_entry;
     stake_entry.kind = StakeEntryKind::Permissioned as u8;
     if stake_entry.last_staker == Pubkey::default() || stake_entry.amount == 0 {

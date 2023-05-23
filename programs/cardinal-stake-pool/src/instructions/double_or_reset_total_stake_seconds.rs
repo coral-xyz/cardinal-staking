@@ -20,6 +20,8 @@ pub struct DoubleOrResetTotalStakeSecondsCtx<'info> {
 }
 
 pub fn handler(ctx: Context<DoubleOrResetTotalStakeSecondsCtx>) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let stake_entry = &mut ctx.accounts.stake_entry;
     let recent_slothashes = &ctx.accounts.recent_slothashes;
     let recent_slothashes_data = recent_slothashes.data.borrow();

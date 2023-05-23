@@ -94,4 +94,7 @@ pub enum ErrorCode {
     InvalidMintForTokenAccount,
     #[msg("Stake entry funds token account is empty")]
     StakeEntryFundsTokenAccountEmpty,
+
+    #[msg("Instruction not supported")]
+    InstructionNotSupported,
 }

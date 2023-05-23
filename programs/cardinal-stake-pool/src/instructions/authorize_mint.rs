@@ -22,6 +22,9 @@ pub struct AuthorizeMintCtx<'info> {
 }
 
 pub fn handler(ctx: Context<AuthorizeMintCtx>, mint: Pubkey) -> Result<()> {
+
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let stake_authorization_record = &mut ctx.accounts.stake_authorization_record;
     stake_authorization_record.bump = *ctx.bumps.get("stake_authorization_record").unwrap();
     stake_authorization_record.pool = ctx.accounts.stake_pool.key();

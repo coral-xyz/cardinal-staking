@@ -34,6 +34,8 @@ pub struct InitStakeBoosterCtx<'info> {
 }
 
 pub fn handler(ctx: Context<InitStakeBoosterCtx>, ix: InitStakeBoosterIx) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let stake_booster = &mut ctx.accounts.stake_booster;
     assert_stake_boost_payment_manager(&ix.payment_manager)?;
     stake_booster.bump = *ctx.bumps.get("stake_booster").unwrap();

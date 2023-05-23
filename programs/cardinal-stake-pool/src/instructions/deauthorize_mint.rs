@@ -13,5 +13,6 @@ pub struct DeauthorizeMintCtx<'info> {
 }
 
 pub fn handler(_ctx: Context<DeauthorizeMintCtx>) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
     Ok(())
 }

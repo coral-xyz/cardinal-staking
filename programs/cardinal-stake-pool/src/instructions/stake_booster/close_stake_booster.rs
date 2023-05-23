@@ -13,5 +13,7 @@ pub struct CloseStakeBoosterCtx<'info> {
 }
 
 pub fn handler(_ctx: Context<CloseStakeBoosterCtx>) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     Ok(())
 }

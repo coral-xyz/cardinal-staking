@@ -16,6 +16,8 @@ pub struct InitUngroupingCtx<'info> {
 }
 
 pub fn handler(ctx: Context<InitUngroupingCtx>) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let group_entry = &mut ctx.accounts.group_entry;
 
     if group_entry.group_stake_seconds > 0 && (Clock::get().unwrap().unix_timestamp - group_entry.changed_at) < group_entry.group_stake_seconds as i64 {

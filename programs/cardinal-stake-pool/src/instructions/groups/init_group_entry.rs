@@ -1,4 +1,5 @@
 use crate::state::*;
+use crate::errors::ErrorCode;
 use anchor_lang::prelude::*;
 
 #[derive(AnchorSerialize, AnchorDeserialize)]
@@ -25,6 +26,8 @@ pub struct InitGroupEntryCtx<'info> {
 }
 
 pub fn handler(ctx: Context<InitGroupEntryCtx>, ix: InitGroupEntryIx) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let group_entry = &mut ctx.accounts.group_entry;
     let authority = &mut ctx.accounts.authority;
     group_entry.bump = *ctx.bumps.get("group_entry").unwrap();

@@ -28,6 +28,9 @@ pub struct ClaimStakeEntryFundsCtx<'info> {
 }
 
 pub fn handler(ctx: Context<ClaimStakeEntryFundsCtx>) -> Result<()> {
+
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     if ctx.accounts.stake_entry.last_staker == Pubkey::default() {
         return Err(error!(ErrorCode::InvalidLastStaker));
     }

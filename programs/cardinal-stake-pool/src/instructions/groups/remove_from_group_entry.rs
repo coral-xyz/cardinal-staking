@@ -20,6 +20,8 @@ pub struct RemoveFromGroupEntryCtx<'info> {
 }
 
 pub fn handler(ctx: Context<RemoveFromGroupEntryCtx>) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let group_entry = &mut ctx.accounts.group_entry;
     let stake_entry = &mut ctx.accounts.stake_entry;
 

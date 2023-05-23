@@ -34,6 +34,7 @@ pub struct ReturnReceiptMintCtx<'info> {
 }
 
 pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, ReturnReceiptMintCtx<'info>>) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
     let stake_entry = &mut ctx.accounts.stake_entry;
     let user_receipt_mint_token_account = &mut ctx.accounts.user_receipt_mint_token_account;
 

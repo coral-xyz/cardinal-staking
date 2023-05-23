@@ -20,6 +20,8 @@ pub struct ReassignStakeEntryCtx<'info> {
 }
 
 pub fn handler(ctx: Context<ReassignStakeEntryCtx>, ix: ReassignStakeEntryIx) -> Result<()> {
+    return Err(error!(ErrorCode::InstructionNotSupported));
+
     let stake_entry = &mut ctx.accounts.stake_entry;
 
     // update last staker
