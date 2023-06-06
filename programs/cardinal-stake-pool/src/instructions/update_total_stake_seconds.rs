@@ -25,8 +25,8 @@ pub fn handler(ctx: Context<UpdateTotalStakeSecondsCtx>) -> Result<()> {
         stake_entry.last_updated_at = Some(Clock::get().unwrap().unix_timestamp);
     }
 
-    if ctx.accounts.last_staker.key() != stake_entry.last_staker {
-        stake_entry.kind = StakeEntryKind::Permissioned as u8
-    }
+    // if ctx.accounts.last_staker.key() != stake_entry.last_staker {
+    //     stake_entry.kind = StakeEntryKind::Permissioned as u8
+    // }
     Ok(())
 }

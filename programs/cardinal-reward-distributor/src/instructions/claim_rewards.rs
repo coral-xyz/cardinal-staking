@@ -18,12 +18,13 @@ use std::str::FromStr;
 pub struct ClaimRewardsCtx<'info> {
     #[account(mut)]
     reward_entry: Box<Account<'info, RewardEntry>>,
-    #[account(mut, constraint = reward_distributor.stake_pool == stake_pool.key())]
+    #[account(mut, constraint = reward_distributor.stake_pool == stake_pool.key() && reward_entry.reward_distributor == reward_distributor.key())]
     reward_distributor: Box<Account<'info, RewardDistributor>>,
 
     #[account(constraint =
         stake_entry.key() == reward_entry.stake_entry
         && stake_entry.last_staker != Pubkey::default()
+        && stake_entry.last_staker == user.key()
         && stake_entry.original_mint == original_mint.key()
         @ ErrorCode::InvalidStakeEntry)]
     stake_entry: Box<Account<'info, StakeEntry>>,
