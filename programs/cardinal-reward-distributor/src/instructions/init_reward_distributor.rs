@@ -39,7 +39,7 @@ pub struct InitRewardDistributorCtx<'info> {
     #[account(mut)]
     reward_mint: Box<Account<'info, Mint>>,
 
-    #[account(mut, constraint = authority.key() == INIT_REWARD_DISTRIBUTOR_AUTHORITY @ ErrorCode::InvalidAuthority)]
+    #[account(mut, constraint = authority.key() == INIT_AUTHORITY @ ErrorCode::InvalidAuthority)]
     authority: Signer<'info>,
     #[account(mut)]
     payer: Signer<'info>,

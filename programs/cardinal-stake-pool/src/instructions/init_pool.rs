@@ -30,6 +30,8 @@ pub struct InitPoolCtx<'info> {
     #[account(mut)]
     identifier: Account<'info, Identifier>,
 
+    #[account(constraint = authority.key() == INIT_AUTHORITY)]
+    authority: Signer<'info>,
     #[account(mut)]
     payer: Signer<'info>,
     system_program: Program<'info, System>,
@@ -45,7 +47,10 @@ pub fn handler(ctx: Context<InitPoolCtx>, ix: InitPoolIx) -> Result<()> {
     stake_pool.requires_authorization = ix.requires_authorization;
     stake_pool.overlay_text = ix.overlay_text;
     stake_pool.image_uri = ix.image_uri;
-    stake_pool.authority = ix.authority;
+    // This authority isn't used right now.
+    // If it's to be used in the future, we need to do a program upgrade
+    // to bootstrap it.
+    stake_pool.authority = Pubkey::default();
     stake_pool.reset_on_stake = ix.reset_on_stake;
     stake_pool.total_staked = 0;
     stake_pool.cooldown_seconds = ix.cooldown_seconds;

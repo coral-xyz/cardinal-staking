@@ -2,6 +2,9 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::pubkey;
 use std::str::FromStr;
 
+// Re-export.
+pub use cardinal_stake_pool::state::INIT_AUTHORITY;
+
 pub const CLAIM_REWARD_LAMPORTS: u64 = 2_000_000;
 
 pub fn assert_reward_manager(pubkey: &Pubkey) -> bool {
@@ -17,9 +20,6 @@ pub const REWARD_ENTRY_SEED: &str = "reward-entry";
 
 // Program id of the souldbound program.
 pub const SBA_PROGRAM: Pubkey = pubkey!("7DkjPwuKxvz6Viiawtbmb4CqnMKP6eGb1WqYas1airUS");
-
-// The keypair that has the ability to init the reward distributor.
-pub const INIT_REWARD_DISTRIBUTOR_AUTHORITY: Pubkey = pubkey!("EcxjN4mea6Ah9WSqZhLtSJJCZcxY73Vaz6UVHFZZ5Ttz");
 
 // PDA namespace prefix for the souldbound authority for this staking program.
 pub const NS_SBA_SCOPED_USER_PROGRAM: &[u8] = b"sba-scoped-user-program";

@@ -1,6 +1,10 @@
 use crate::errors::ErrorCode;
 use anchor_lang::prelude::*;
+use solana_program::pubkey;
 use std::str::FromStr;
+
+// The keypair that has the ability to init the stake pool and reward distributor.
+pub const INIT_AUTHORITY: Pubkey = pubkey!("EcxjN4mea6Ah9WSqZhLtSJJCZcxY73Vaz6UVHFZZ5Ttz");
 
 pub const STAKE_ENTRY_PREFIX: &str = "stake-entry";
 pub const STAKE_ENTRY_SIZE: usize = 8 + std::mem::size_of::<StakeEntry>() + 8;
