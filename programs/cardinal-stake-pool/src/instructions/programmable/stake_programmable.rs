@@ -16,7 +16,7 @@ use solana_program::program::invoke;
 use solana_program::program::invoke_signed;
 use solana_program::pubkey;
 
-pub const REWARD_DISTRIBUTOR_PROGRAM: Pubkey = pubkey!("9zNbk2SZKniByFWH8tg3LKqkXy7myRU611SbJJgPt4gd");
+pub const REWARD_DISTRIBUTOR_PROGRAM: Pubkey = pubkey!("EWbVVjugB3C1jewxFi9wPbvUtUxbU24PErSVe2Tmf6Qu");
 
 #[derive(Accounts)]
 pub struct StakeProgrammableCtx<'info> {
