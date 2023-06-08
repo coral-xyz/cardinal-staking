@@ -62,7 +62,12 @@ pub fn handler<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts,
 
     let authority = &ctx.accounts.authority;
     let original_mint = &ctx.accounts.original_mint;
-    let expected_authority = Pubkey::find_program_address(&[NS_SBA_SCOPED_USER_PROGRAM, stake_entry.last_staker.as_ref(), crate::ID.as_ref()], &SBA_PROGRAM).0;
+    let original_mint_key = original_mint.key();
+    let expected_authority = Pubkey::find_program_address(
+        &[NS_SBA_SCOPED_USER_NFT_PROGRAM, stake_entry.last_staker.as_ref(), original_mint_key.as_ref(), crate::ID.as_ref()],
+        &SBA_PROGRAM,
+    )
+    .0;
 
     if authority.key() != expected_authority {
         return Err(error!(ErrorCode::InvalidRewardTokenOwner));

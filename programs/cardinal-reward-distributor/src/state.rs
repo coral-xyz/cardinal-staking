@@ -22,7 +22,7 @@ pub const REWARD_ENTRY_SEED: &str = "reward-entry";
 pub const SBA_PROGRAM: Pubkey = pubkey!("7DkjPwuKxvz6Viiawtbmb4CqnMKP6eGb1WqYas1airUS");
 
 // PDA namespace prefix for the souldbound authority for this staking program.
-pub const NS_SBA_SCOPED_USER_PROGRAM: &[u8] = b"sba-scoped-user-program";
+pub const NS_SBA_SCOPED_USER_NFT_PROGRAM: &[u8] = b"sba-scoped-user-nft-program";
 
 ////////////////////////////////////////////////////////////////////////////////
 
