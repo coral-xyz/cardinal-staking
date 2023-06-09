@@ -60,6 +60,9 @@ pub struct TransferRewardsCtx<'info> {
 
     /// CHECK: PDA checked in handler.
     authority_b: UncheckedAccount<'info>,
+    /// CHECK: Authority is checked to be the correct soulbound PDA, which
+    ///        is a function of the mint and the last staker, and the last
+    ///        staker is indeed this user.
     #[account(mut)]
     user: UncheckedAccount<'info>,
     associated_token_program: Program<'info, AssociatedToken>,
@@ -68,7 +71,7 @@ pub struct TransferRewardsCtx<'info> {
     rent: Sysvar<'info, Rent>,
 }
 
-pub fn handler(ctx: Context<TransferRewardsCtx>, amount: u64) -> Result<()> {
+pub fn handler(ctx: Context<TransferRewardsCtx>, amount: Option<u64>) -> Result<()> {
     let authority_a = &ctx.accounts.authority_a;
     let original_mint_a = &ctx.accounts.original_mint_a;
     let expected_authority_a = Pubkey::find_program_address(
@@ -101,6 +104,7 @@ pub fn handler(ctx: Context<TransferRewardsCtx>, amount: u64) -> Result<()> {
 
     let token_account_a = &ctx.accounts.user_reward_mint_token_account_a;
 
+    let amount = amount.unwrap_or_else(|| token_account_a.amount);
     if amount > token_account_a.amount {
         return Err(error!(ErrorCode::NotEnoughRewardTokens));
     }

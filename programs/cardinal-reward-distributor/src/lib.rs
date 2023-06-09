@@ -23,7 +23,7 @@ pub mod cardinal_reward_distributor {
         claim_rewards::handler(ctx)
     }
 
-    pub fn transfer_rewards(ctx: Context<TransferRewardsCtx>, amount: u64) -> Result<()> {
+    pub fn transfer_rewards(ctx: Context<TransferRewardsCtx>, amount: Option<u64>) -> Result<()> {
         transfer_rewards::handler(ctx, amount)
     }
 

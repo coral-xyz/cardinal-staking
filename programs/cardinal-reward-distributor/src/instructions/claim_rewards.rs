@@ -44,6 +44,9 @@ pub struct ClaimRewardsCtx<'info> {
 
     // Note: the PDA seeds are checked in the handler function body.
     authority: Signer<'info>,
+    /// CHECK: Authority is checked to be the correct soulbound PDA, which
+    ///        is a function of the mint and the last staker, and the last
+    ///        staker is indeed this user.
     #[account(mut)]
     user: UncheckedAccount<'info>,
     associated_token_program: Program<'info, AssociatedToken>,
