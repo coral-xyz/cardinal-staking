@@ -45,7 +45,7 @@ pub struct ClaimRewardsCtx<'info> {
     // Note: the PDA seeds are checked in the handler function body.
     authority: Signer<'info>,
     #[account(mut)]
-    user: Signer<'info>,
+    user: UncheckedAccount<'info>,
     associated_token_program: Program<'info, AssociatedToken>,
     token_program: Program<'info, Token>,
     system_program: Program<'info, System>,

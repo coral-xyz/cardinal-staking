@@ -15,9 +15,10 @@ use std::str::FromStr;
 
 #[derive(Accounts)]
 pub struct TransferRewardsCtx<'info> {
-    #[account(mut)]
+    #[account(mut, constraint = reward_entry_a.reward_distributor == reward_distributor.key())]
     reward_entry_a: Box<Account<'info, RewardEntry>>,
-    #[account(mut, constraint = reward_entry_b.key() != reward_entry_a.key() @ ErrorCode::InvalidSelfTransfer)]
+    #[account(mut, constraint = reward_entry_b.key() != reward_entry_a.key()
+    && reward_entry_b.reward_distributor == reward_distributor.key())]
     reward_entry_b: Box<Account<'info, RewardEntry>>,
     #[account(mut, constraint = reward_distributor.stake_pool == stake_pool.key())]
     reward_distributor: Box<Account<'info, RewardDistributor>>,
@@ -60,7 +61,7 @@ pub struct TransferRewardsCtx<'info> {
     /// CHECK: PDA checked in handler.
     authority_b: UncheckedAccount<'info>,
     #[account(mut)]
-    user: Signer<'info>,
+    user: UncheckedAccount<'info>,
     associated_token_program: Program<'info, AssociatedToken>,
     token_program: Program<'info, Token>,
     system_program: Program<'info, System>,
